@@ -46,6 +46,7 @@ func TestLambdaActor(t *testing.T) {
 	response, err := actor.Ask(ctx, pid, params, time.Minute)
 	if err != nil {
 		logger.Error(err)
+		logger.Info(response)
 		t.Error("Failed to message actor", err)
 	}
 	switch response.(type) {
