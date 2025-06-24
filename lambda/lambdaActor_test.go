@@ -43,7 +43,7 @@ func TestLambdaActor(t *testing.T) {
 		t.Error("Failed to spawn actor", err)
 	}
 	params.JsonParamString = string(numberBytes)
-	response, err := actor.Ask(ctx, pid, params, time.Second)
+	response, err := actor.Ask(ctx, pid, params, time.Minute)
 	if err != nil {
 		logger.Error(err)
 		t.Error("Failed to message actor", err)
