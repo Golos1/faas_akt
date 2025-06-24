@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option go_package = "./faas_akt";
+service Lambda{
+    rpc Invoke(Params) returns (Result) {}
+}
+message Params {
+    string JsonParamString = 1;
+}
+ message Result{
+    string JsonResultString = 1;
+    string Logs = 2;
+ }
