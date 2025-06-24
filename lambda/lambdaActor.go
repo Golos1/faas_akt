@@ -82,6 +82,7 @@ func (actor LambdaActor[T]) Receive(ctx *actor.ReceiveContext) {
 				ctx.Unhandled()
 			} else {
 				reply.Logs = *result.LogResult
+				ctx.Logger().Info(string(result.Payload))
 				ctx.Response(reply)
 			}
 		}
