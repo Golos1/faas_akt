@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/tochemey/goakt/v3/actor"
 	"github.com/tochemey/goakt/v3/log"
@@ -30,8 +31,13 @@ func TestLambdaActor(t *testing.T) {
 		logger.Error(err)
 		t.Error("Failed to start Actor System", err)
 	}
-	client := lambda.Client{}
-	pid, err := actorSystem.Spawn(ctx, "Lambda", NewLambdaActor[AddParams]("Add", &client, true))
+	sdkConfig, err := config.LoadDefaultConfig(ctx)
+	if err != nil {
+		logger.Error(err)
+		t.Error("Failed to create Lambda client", err)
+	}
+	client := lambda.NewFromConfig(sdkConfig)
+	pid, err := actorSystem.Spawn(ctx, "Lambda", NewLambdaActor[AddParams]("Add", client, true))
 	if err != nil {
 		logger.Error(err)
 		t.Error("Failed to spawn actor", err)
@@ -43,7 +49,7 @@ func TestLambdaActor(t *testing.T) {
 		t.Error("Failed to spawn actor", err)
 	}
 	params.JsonParamString = string(numberBytes)
-	response, err := actor.Ask(ctx, pid, params, time.Minute)
+	response, err := actor.Ask(ctx, pid, params, time.Second)
 	if err != nil {
 		logger.Error(err)
 		logger.Info(response)
