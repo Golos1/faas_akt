@@ -59,9 +59,9 @@ func TestLambdaActor(t *testing.T) {
 	switch response.(type) {
 	case *Result:
 		descriptor := response.ProtoReflect().Descriptor().Fields().ByName("JsonResultString")
-		jsonResult := response.ProtoReflect().Get(descriptor)
+		jsonResult := response.ProtoReflect().Get(descriptor).String()
 		structResult := new(AddResult)
-		json.Unmarshal(([]byte(jsonResult.String())), structResult)
+		json.Unmarshal(([]byte(jsonResult)), structResult)
 		if structResult.result != 5 {
 			logger.Info(jsonResult)
 			t.Error("Add should have returned 5", structResult.result)
