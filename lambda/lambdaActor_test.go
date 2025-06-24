@@ -1,4 +1,4 @@
-package faas_akt
+package lambda
 
 import (
 	"context"
@@ -68,6 +68,11 @@ func TestLambdaActor(t *testing.T) {
 			logger.Info(jsonResult)
 			logger.Info(structResult)
 			t.Error("Add should have returned 5", structResult.Result)
+		}
+		descriptor = response.ProtoReflect().Descriptor().Fields().ByName("Logs")
+		logs := response.ProtoReflect().Get(descriptor).String()
+		if logs == "" {
+			t.Error("Empty Logs")
 		}
 	}
 }

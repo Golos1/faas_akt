@@ -4,7 +4,7 @@
 // - protoc             v5.29.3
 // source: lambda.proto
 
-package faas_akt
+package lambda
 
 import (
 	context "context"

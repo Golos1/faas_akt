@@ -4,7 +4,7 @@
 // 	protoc        v5.29.3
 // source: lambda.proto
 
-package faas_akt
+package lambda
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -128,8 +128,7 @@ const file_lambda_proto_rawDesc = "" +
 	"\x10JsonResultString\x18\x01 \x01(\tR\x10JsonResultString\x12\x12\n" +
 	"\x04Logs\x18\x02 \x01(\tR\x04Logs2&\n" +
 	"\x06Lambda\x12\x1c\n" +
-	"\x06Invoke\x12\a.Params\x1a\a.Result\"\x00B\fZ\n" +
-	"./faas_aktb\x06proto3"
+	"\x06Invoke\x12\a.Params\x1a\a.Result\"\x00B\vZ\t../lambdab\x06proto3"
 
 var (
 	file_lambda_proto_rawDescOnce sync.Once

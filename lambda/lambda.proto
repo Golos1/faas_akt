@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "./faas_akt";
+option go_package = "../lambda";
 service Lambda{
     rpc Invoke(Params) returns (Result) {}
 }

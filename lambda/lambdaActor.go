@@ -1,4 +1,4 @@
-package faas_akt
+package lambda
 
 import (
 	"encoding/json"
