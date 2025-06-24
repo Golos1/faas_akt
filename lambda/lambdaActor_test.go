@@ -63,8 +63,7 @@ func TestLambdaActor(t *testing.T) {
 		structResult := new(AddResult)
 		json.Unmarshal(([]byte(jsonResult.String())), structResult)
 		if structResult.result != 5 {
-			logger.Error(err)
-			logger.Info(structResult)
+			logger.Info(jsonResult)
 			t.Error("Add should have returned 5", structResult.result)
 		}
 	}
