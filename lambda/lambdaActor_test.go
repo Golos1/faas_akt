@@ -65,7 +65,7 @@ func TestLambdaActor(t *testing.T) {
 		if structResult.result != 5 {
 			logger.Error(err)
 			logger.Info(structResult)
-			t.Error("Add should have returned 5", structResult.result, 5)
+			t.Error("Add should have returned 5", structResult.result)
 		}
 	}
 }
