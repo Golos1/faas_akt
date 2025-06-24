@@ -27,7 +27,8 @@ func TestLambdaActor(t *testing.T) {
 	actorSystem, _ := actor.NewActorSystem(
 		"TestLambda",
 	)
-	if err := actorSystem.Start(ctx); err != nil {
+	err := actorSystem.Start(ctx)
+	if err != nil {
 		logger.Error(err)
 		t.Error("Failed to start Actor System", err)
 	}
@@ -59,9 +60,11 @@ func TestLambdaActor(t *testing.T) {
 	case *Result:
 		descriptor := response.ProtoReflect().Descriptor().Fields().ByName("JsonParamString")
 		jsonResult := response.ProtoReflect().Get(descriptor)
-		var structResult AddResult
-		json.Unmarshal(jsonResult.Bytes(), &structResult)
+		structResult := new(AddResult)
+		json.Unmarshal(jsonResult.Bytes(), structResult)
 		if structResult.result != 5 {
+			logger.Error(err)
+			logger.Info(structResult)
 			t.Error("Add should have returned 5", structResult.result, 5)
 		}
 	}
