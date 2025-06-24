@@ -75,10 +75,14 @@ func (actor LambdaActor[T]) Receive(ctx *actor.ReceiveContext) {
 		} else {
 			ctx.Logger().Info("Function successfully invoked.")
 			reply := new(Result)
-			payload, _ := json.Marshal(result.Payload)
-			reply.JsonResultString = string(payload)
-			reply.Logs = *result.LogResult
-			ctx.Response(reply)
+			err := json.Unmarshal(result.Payload, &reply)
+			if err != nil {
+				ctx.Logger().Error("Error Invoking Function: ", err)
+				ctx.Unhandled()
+			} else {
+				reply.Logs = *result.LogResult
+				ctx.Response(reply)
+			}
 		}
 	default:
 		ctx.Unhandled()
