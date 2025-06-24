@@ -13,8 +13,8 @@ import (
 )
 
 type AddParams struct {
-	a int `validate:"required"`
-	b int `validate:"required"`
+	A int `validate:"required"`
+	B int `validate:"required"`
 }
 type AddResult struct {
 	result int `validate:"required"`
@@ -44,7 +44,7 @@ func TestLambdaActor(t *testing.T) {
 		t.Error("Failed to spawn actor", err)
 	}
 	params := new(Params)
-	numberBytes, err := json.Marshal(AddParams{a: 2, b: 3})
+	numberBytes, err := json.Marshal(AddParams{A: 2, B: 3})
 	if err != nil {
 		logger.Error(err)
 		t.Error("Failed to spawn actor", err)
