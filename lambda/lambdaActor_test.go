@@ -58,7 +58,7 @@ func TestLambdaActor(t *testing.T) {
 	}
 	switch response.(type) {
 	case *Result:
-		descriptor := response.ProtoReflect().Descriptor().Fields().ByName("JsonParamString")
+		descriptor := response.ProtoReflect().Descriptor().Fields().ByName("JsonResultString")
 		jsonResult := response.ProtoReflect().Get(descriptor)
 		structResult := new(AddResult)
 		json.Unmarshal(jsonResult.Bytes(), structResult)
