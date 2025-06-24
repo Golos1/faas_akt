@@ -7,6 +7,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        name: get_credentials
+        with:
+          aws-region: 'us-east-2'
+          role-to-assume: ${{secrets.AWS_ROLE}}
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
