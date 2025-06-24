@@ -50,6 +50,7 @@ func TestLambdaActor(t *testing.T) {
 		t.Error("Failed to spawn actor", err)
 	}
 	params.JsonParamString = string(numberBytes)
+
 	response, err := actor.Ask(ctx, pid, params, time.Second)
 	if err != nil {
 		logger.Error(err)
@@ -63,7 +64,7 @@ func TestLambdaActor(t *testing.T) {
 		structResult := new(AddResult)
 		json.Unmarshal([]byte(jsonResult), structResult)
 		if structResult.result != 5 {
-			logger.Info(jsonResult)
+			logger.Info(structResult)
 			t.Error("Add should have returned 5", structResult.result)
 		}
 	}
