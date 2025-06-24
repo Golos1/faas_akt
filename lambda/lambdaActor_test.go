@@ -26,6 +26,7 @@ func TestLambdaActor(t *testing.T) {
 	logger := log.DefaultLogger
 	actorSystem, _ := actor.NewActorSystem(
 		"TestLambda",
+		actor.WithLogger(logger),
 	)
 	err := actorSystem.Start(ctx)
 	if err != nil {
