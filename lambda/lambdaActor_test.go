@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Golos1/faas_akt"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/tochemey/goakt/v3/actor"
@@ -44,7 +45,7 @@ func TestLambdaActor(t *testing.T) {
 		logger.Error(err)
 		t.Error("Failed to spawn actor", err)
 	}
-	params := new(Params)
+	params := new(faas_akt.Params)
 	numberBytes, err := json.Marshal(AddParams{A: 2, B: 3})
 	if err != nil {
 		logger.Error(err)
@@ -59,7 +60,7 @@ func TestLambdaActor(t *testing.T) {
 		t.Error("Failed to message actor", err)
 	}
 	switch response.(type) {
-	case *Result:
+	case *faas_akt.Result:
 		descriptor := response.ProtoReflect().Descriptor().Fields().ByName("JsonResultString")
 		jsonResult := response.ProtoReflect().Get(descriptor).String()
 		structResult := new(AddResult)

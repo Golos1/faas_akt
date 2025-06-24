@@ -3,6 +3,7 @@ package lambda
 import (
 	"encoding/json"
 
+	"github.com/Golos1/faas_akt"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/go-playground/validator/v10"
@@ -45,7 +46,7 @@ func (actor LambdaActor[T]) Receive(ctx *actor.ReceiveContext) {
 	var args T
 	switch ctx.Message().(type) {
 	case *goaktpb.PostStart:
-	case *Params:
+	case *faas_akt.Params:
 		parameters := ctx.Message().ProtoReflect().Get(ctx.Message().ProtoReflect().Descriptor().Fields().ByName("JsonParamString")).String()
 		arg_bytes := []byte(parameters)
 		err := json.Unmarshal(arg_bytes, &args)
@@ -74,7 +75,7 @@ func (actor LambdaActor[T]) Receive(ctx *actor.ReceiveContext) {
 
 		} else {
 			ctx.Logger().Info("Function successfully invoked.")
-			reply := new(Result)
+			reply := new(faas_akt.Result)
 			reply.JsonResultString = string(result.Payload)
 			reply.Logs = *result.LogResult
 			ctx.Logger().Info(reply.JsonResultString)

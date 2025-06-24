@@ -1,6 +1,7 @@
 syntax = "proto3";
 
-option go_package = "../lambda";
+option go_package = "github.com/Golos1/faas_akt";
+package faas_akt;
 service Lambda{
     rpc Invoke(Params) returns (Result) {}
 }

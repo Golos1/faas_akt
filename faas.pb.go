@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        v5.29.3
-// source: lambda.proto
+// source: faas.proto
 
-package lambda
+package faas_akt
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -30,7 +30,7 @@ type Params struct {
 
 func (x *Params) Reset() {
 	*x = Params{}
-	mi := &file_lambda_proto_msgTypes[0]
+	mi := &file_faas_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -42,7 +42,7 @@ func (x *Params) String() string {
 func (*Params) ProtoMessage() {}
 
 func (x *Params) ProtoReflect() protoreflect.Message {
-	mi := &file_lambda_proto_msgTypes[0]
+	mi := &file_faas_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -55,7 +55,7 @@ func (x *Params) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Params.ProtoReflect.Descriptor instead.
 func (*Params) Descriptor() ([]byte, []int) {
-	return file_lambda_proto_rawDescGZIP(), []int{0}
+	return file_faas_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Params) GetJsonParamString() string {
@@ -75,7 +75,7 @@ type Result struct {
 
 func (x *Result) Reset() {
 	*x = Result{}
-	mi := &file_lambda_proto_msgTypes[1]
+	mi := &file_faas_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -87,7 +87,7 @@ func (x *Result) String() string {
 func (*Result) ProtoMessage() {}
 
 func (x *Result) ProtoReflect() protoreflect.Message {
-	mi := &file_lambda_proto_msgTypes[1]
+	mi := &file_faas_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -100,7 +100,7 @@ func (x *Result) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Result.ProtoReflect.Descriptor instead.
 func (*Result) Descriptor() ([]byte, []int) {
-	return file_lambda_proto_rawDescGZIP(), []int{1}
+	return file_faas_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *Result) GetJsonResultString() string {
@@ -117,39 +117,40 @@ func (x *Result) GetLogs() string {
 	return ""
 }
 
-var File_lambda_proto protoreflect.FileDescriptor
+var File_faas_proto protoreflect.FileDescriptor
 
-const file_lambda_proto_rawDesc = "" +
+const file_faas_proto_rawDesc = "" +
 	"\n" +
-	"\flambda.proto\"2\n" +
+	"\n" +
+	"faas.proto\x12\bfaas_akt\"2\n" +
 	"\x06Params\x12(\n" +
 	"\x0fJsonParamString\x18\x01 \x01(\tR\x0fJsonParamString\"H\n" +
 	"\x06Result\x12*\n" +
 	"\x10JsonResultString\x18\x01 \x01(\tR\x10JsonResultString\x12\x12\n" +
-	"\x04Logs\x18\x02 \x01(\tR\x04Logs2&\n" +
-	"\x06Lambda\x12\x1c\n" +
-	"\x06Invoke\x12\a.Params\x1a\a.Result\"\x00B\vZ\t../lambdab\x06proto3"
+	"\x04Logs\x18\x02 \x01(\tR\x04Logs28\n" +
+	"\x06Lambda\x12.\n" +
+	"\x06Invoke\x12\x10.faas_akt.Params\x1a\x10.faas_akt.Result\"\x00B\x1cZ\x1agithub.com/Golos1/faas_aktb\x06proto3"
 
 var (
-	file_lambda_proto_rawDescOnce sync.Once
-	file_lambda_proto_rawDescData []byte
+	file_faas_proto_rawDescOnce sync.Once
+	file_faas_proto_rawDescData []byte
 )
 
-func file_lambda_proto_rawDescGZIP() []byte {
-	file_lambda_proto_rawDescOnce.Do(func() {
-		file_lambda_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_lambda_proto_rawDesc), len(file_lambda_proto_rawDesc)))
+func file_faas_proto_rawDescGZIP() []byte {
+	file_faas_proto_rawDescOnce.Do(func() {
+		file_faas_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_faas_proto_rawDesc), len(file_faas_proto_rawDesc)))
 	})
-	return file_lambda_proto_rawDescData
+	return file_faas_proto_rawDescData
 }
 
-var file_lambda_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_lambda_proto_goTypes = []any{
-	(*Params)(nil), // 0: Params
-	(*Result)(nil), // 1: Result
+var file_faas_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_faas_proto_goTypes = []any{
+	(*Params)(nil), // 0: faas_akt.Params
+	(*Result)(nil), // 1: faas_akt.Result
 }
-var file_lambda_proto_depIdxs = []int32{
-	0, // 0: Lambda.Invoke:input_type -> Params
-	1, // 1: Lambda.Invoke:output_type -> Result
+var file_faas_proto_depIdxs = []int32{
+	0, // 0: faas_akt.Lambda.Invoke:input_type -> faas_akt.Params
+	1, // 1: faas_akt.Lambda.Invoke:output_type -> faas_akt.Result
 	1, // [1:2] is the sub-list for method output_type
 	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -157,26 +158,26 @@ var file_lambda_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_lambda_proto_init() }
-func file_lambda_proto_init() {
-	if File_lambda_proto != nil {
+func init() { file_faas_proto_init() }
+func file_faas_proto_init() {
+	if File_faas_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_lambda_proto_rawDesc), len(file_lambda_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_faas_proto_rawDesc), len(file_faas_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_lambda_proto_goTypes,
-		DependencyIndexes: file_lambda_proto_depIdxs,
-		MessageInfos:      file_lambda_proto_msgTypes,
+		GoTypes:           file_faas_proto_goTypes,
+		DependencyIndexes: file_faas_proto_depIdxs,
+		MessageInfos:      file_faas_proto_msgTypes,
 	}.Build()
-	File_lambda_proto = out.File
-	file_lambda_proto_goTypes = nil
-	file_lambda_proto_depIdxs = nil
+	File_faas_proto = out.File
+	file_faas_proto_goTypes = nil
+	file_faas_proto_depIdxs = nil
 }

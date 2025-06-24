@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v5.29.3
-// source: lambda.proto
+// source: faas.proto
 
-package lambda
+package faas_akt
 
 import (
 	context "context"
@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Lambda_Invoke_FullMethodName = "/Lambda/Invoke"
+	Lambda_Invoke_FullMethodName = "/faas_akt.Lambda/Invoke"
 )
 
 // LambdaClient is the client API for Lambda service.
@@ -108,7 +108,7 @@ func _Lambda_Invoke_Handler(srv interface{}, ctx context.Context, dec func(inter
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Lambda_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "Lambda",
+	ServiceName: "faas_akt.Lambda",
 	HandlerType: (*LambdaServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -117,5 +117,5 @@ var Lambda_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "lambda.proto",
+	Metadata: "faas.proto",
 }
