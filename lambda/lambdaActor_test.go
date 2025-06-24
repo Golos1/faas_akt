@@ -61,7 +61,7 @@ func TestLambdaActor(t *testing.T) {
 		descriptor := response.ProtoReflect().Descriptor().Fields().ByName("JsonResultString")
 		jsonResult := response.ProtoReflect().Get(descriptor)
 		structResult := new(AddResult)
-		json.Unmarshal(jsonResult.Bytes(), structResult)
+		json.Unmarshal(([]byte(jsonResult.String())), structResult)
 		if structResult.result != 5 {
 			logger.Error(err)
 			logger.Info(structResult)
