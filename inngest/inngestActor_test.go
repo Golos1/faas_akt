@@ -32,7 +32,7 @@ func TestInngestActor(t *testing.T) {
 		t.Error("Failed to start Actor System", err)
 	}
 	inngestKey := os.Getenv("INNGEST_KEY")
-	inngestClient, err := inngestgo.NewClient(inngestgo.ClientOpts{EventKey: &inngestKey})
+	inngestClient, err := inngestgo.NewClient(inngestgo.ClientOpts{EventKey: &inngestKey, AppID: "Test"})
 	if err != nil {
 		logger.Error(err)
 		t.Error("Error creating inngest client.", err)
