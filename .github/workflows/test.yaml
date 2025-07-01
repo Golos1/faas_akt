@@ -2,7 +2,7 @@ name: Test
 on: [push]
 
 jobs:
-  build_test:
+  test_lambda:
     permissions:
       id-token: write
       contents: read
@@ -22,7 +22,33 @@ jobs:
         run: go mod download
       - name: Build
         run: go build -v ./...
-      - name: Test Lambda
+      - name: Test Lambda Actor
         run: |
           cd lambda
+          go test
+  test_inngest:
+    env:
+      INNGEST_KEY: ${{secrets.INNGEST_KEY}}
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        name: get_credentials
+        with:
+          aws-region: 'us-east-2'
+          role-to-assume: ${{secrets.AWS_ROLE}}
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21.x'
+      - name: Install dependencies
+        run: go mod download
+      - name: Build
+        run: go build -v ./...
+      - name: Test Inngest Actor
+        run: |
+          cd inngest
           go test
