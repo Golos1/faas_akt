@@ -21,11 +21,13 @@ type InngestActor[T any] struct {
 
 // PreStart implements actor.Actor. No setup is needed for this Actor
 func (actor *InngestActor[T]) PreStart(ctx *actor.Context) error {
+	ctx.ActorSystem().Logger().Info("PreStart for Inngest Actor")
 	return nil
 }
 
 // Receive implements actor.Actor.
 func (actor *InngestActor[T]) Receive(ctx *actor.ReceiveContext) {
+	ctx.ActorSystem().Logger().Info("Inngest Actor received message")
 	switch ctx.Message().(type) {
 	case *goaktpb.PostStart:
 	case *faas_akt.InngestEvent:
@@ -48,7 +50,8 @@ func (actor *InngestActor[T]) Receive(ctx *actor.ReceiveContext) {
 			ctx.Response(&faas_akt.InvokedSuccessfully{})
 		}
 	default:
-
+		ctx.Logger().Error("Wrong Type of message")
+		ctx.Unhandled()
 	}
 }
 

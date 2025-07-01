@@ -33,6 +33,10 @@ func TestInngestActor(t *testing.T) {
 	}
 	inngestKey := os.Getenv("INNGEST_KEY")
 	inngestClient, err := inngestgo.NewClient(inngestgo.ClientOpts{EventKey: &inngestKey})
+	if err != nil {
+		logger.Error(err)
+		t.Error("Error creating inngest client.", err)
+	}
 	inngestgo.CreateFunction(
 		inngestClient, inngestgo.FunctionOpts{
 			ID: "Spit-Back",
