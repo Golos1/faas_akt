@@ -30,10 +30,10 @@ func (actor *InngestActor[T]) Receive(ctx *actor.ReceiveContext) {
 	switch ctx.Message().(type) {
 	case *goaktpb.PostStart:
 	case *faas_akt.InngestEvent:
-		ctx.Logger().Info("Inngest Actor received message.")
-		eventName := ctx.Message().ProtoReflect().Get(ctx.Message().ProtoReflect().Descriptor().Fields().ByName("InngestEvent")).String()
+		ctx.Logger().Info("Received Message.")
+		eventName := ctx.Message().ProtoReflect().Get(ctx.Message().ProtoReflect().Descriptor().Fields().ByName("EventName")).String()
 		payload := ctx.Message().ProtoReflect().Get(ctx.Message().ProtoReflect().Descriptor().Fields().ByName("JsonParamString")).String()
-		ctx.Logger().Info("Inngest Actor received message.")
+		ctx.Logger().Info("Parsed Message.")
 		var payloadMap map[string]any
 		err := json.Unmarshal([]byte(payload), &payloadMap)
 		if err != nil {
