@@ -46,7 +46,7 @@ func TestInngestActor(t *testing.T) {
 			return input.Event.Data, nil
 		},
 	)
-	pid, err := actorSystem.Spawn(ctx, "Inngest", NewInngestActor[map[string]string](inngestClient, "echo"))
+	pid, err := actorSystem.Spawn(ctx, "Inngest", NewInngestActor[map[string]string](inngestClient))
 	if err != nil {
 		logger.Error(err)
 		t.Error("Failed to spawn Actor", err)

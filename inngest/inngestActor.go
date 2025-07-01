@@ -9,7 +9,7 @@ import (
 	"github.com/tochemey/goakt/v3/goaktpb"
 )
 
-func NewInngestActor[T any](client inngestgo.Client, eventName string) *InngestActor[T] {
+func NewInngestActor[T any](client inngestgo.Client) *InngestActor[T] {
 	return &InngestActor[T]{
 		InngestClient: client,
 	}
@@ -44,7 +44,6 @@ func (actor *InngestActor[T]) Receive(ctx *actor.ReceiveContext) {
 			Name: eventName,
 			Data: payloadMap,
 		})
-		ctx.Logger().Info("Got OK from inngest.")
 		if err != nil {
 			ctx.Logger().Error("Error Sending event: ", err)
 			ctx.Unhandled()
