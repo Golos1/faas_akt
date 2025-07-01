@@ -27,22 +27,24 @@ func (actor *InngestActor[T]) PreStart(ctx *actor.Context) error {
 
 // Receive implements actor.Actor.
 func (actor *InngestActor[T]) Receive(ctx *actor.ReceiveContext) {
-	ctx.ActorSystem().Logger().Info("Inngest Actor received message")
 	switch ctx.Message().(type) {
 	case *goaktpb.PostStart:
 	case *faas_akt.InngestEvent:
+		ctx.Logger().Info("Inngest Actor received message.")
 		eventName := ctx.Message().ProtoReflect().Get(ctx.Message().ProtoReflect().Descriptor().Fields().ByName("InngestEvent")).String()
 		payload := ctx.Message().ProtoReflect().Get(ctx.Message().ProtoReflect().Descriptor().Fields().ByName("JsonParamString")).String()
-		payloadMap := new(map[string]any)
-		err := json.Unmarshal([]byte(payload), payloadMap)
+		ctx.Logger().Info("Inngest Actor received message.")
+		var payloadMap map[string]any
+		err := json.Unmarshal([]byte(payload), &payloadMap)
 		if err != nil {
 			ctx.Logger().Error("Error parsing parameters: ", err)
 			ctx.Unhandled()
 		}
 		_, err = actor.InngestClient.Send(ctx.Context(), inngestgo.Event{
 			Name: eventName,
-			Data: *payloadMap,
+			Data: payloadMap,
 		})
+
 		if err != nil {
 			ctx.Logger().Error("Error Sending event: ", err)
 			ctx.Unhandled()

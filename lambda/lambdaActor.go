@@ -82,6 +82,7 @@ func (actor LambdaActor[T]) Receive(ctx *actor.ReceiveContext) {
 			ctx.Response(reply)
 		}
 	default:
+		ctx.Logger().Error("Invalid Message Type")
 		ctx.Unhandled()
 	}
 }
