@@ -1,1 +1,58 @@
 package inngest
+
+import (
+	"encoding/json"
+
+	"github.com/Golos1/faas_akt"
+	"github.com/inngest/inngestgo"
+	"github.com/tochemey/goakt/v3/actor"
+	"github.com/tochemey/goakt/v3/goaktpb"
+)
+
+func NewInngestActor[T any](client inngestgo.Client, eventName string) *InngestActor[T] {
+	return &InngestActor[T]{
+		InngestClient: client,
+	}
+}
+
+type InngestActor[T any] struct {
+	InngestClient inngestgo.Client
+}
+
+// PreStart implements actor.Actor. No setup is needed for this Actor
+func (actor *InngestActor[T]) PreStart(ctx *actor.Context) error {
+	return nil
+}
+
+// Receive implements actor.Actor.
+func (actor *InngestActor[T]) Receive(ctx *actor.ReceiveContext) {
+	switch ctx.Message().(type) {
+	case *goaktpb.PostStart:
+	case *faas_akt.InngestEvent:
+		eventName := ctx.Message().ProtoReflect().Get(ctx.Message().ProtoReflect().Descriptor().Fields().ByName("InngestEvent")).String()
+		payload := ctx.Message().ProtoReflect().Get(ctx.Message().ProtoReflect().Descriptor().Fields().ByName("JsonParamString")).String()
+		payloadMap := new(map[string]any)
+		err := json.Unmarshal([]byte(payload), payloadMap)
+		if err != nil {
+			ctx.Logger().Error("Error parsing parameters: ", err)
+			ctx.Unhandled()
+		}
+		_, err = actor.InngestClient.Send(ctx.Context(), inngestgo.Event{
+			Name: eventName,
+			Data: *payloadMap,
+		})
+		if err != nil {
+			ctx.Logger().Error("Error Sending event: ", err)
+			ctx.Unhandled()
+		} else {
+			ctx.Response(&faas_akt.InvokedSuccessfully{})
+		}
+	default:
+
+	}
+}
+
+// PostStop implements actor.Actor. No teardown is needed for this Actor.
+func (actor *InngestActor[T]) PostStop(ctx *actor.Context) error {
+	return nil
+}

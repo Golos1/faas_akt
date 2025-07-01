@@ -3,12 +3,20 @@ syntax = "proto3";
 option go_package = "github.com/Golos1/faas_akt";
 package faas_akt;
 service Lambda{
-    rpc Invoke(Params) returns (Result) {}
+    rpc Invoke(LambdaParams) returns (LambdaResult) {}
 }
-message Params {
+message LambdaParams {
     string JsonParamString = 1;
 }
- message Result{
+ message LambdaResult{
     string JsonResultString = 1;
     string Logs = 2;
  }
+service Inngest{
+    rpc Trigger(InngestEvent) returns (InvokedSuccessfully){}
+}
+message InvokedSuccessfully{}
+message InngestEvent{
+    string EventName = 1;
+    string JsonParamString = 2;
+}

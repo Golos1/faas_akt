@@ -45,7 +45,7 @@ func TestLambdaActor(t *testing.T) {
 		logger.Error(err)
 		t.Error("Failed to spawn actor", err)
 	}
-	params := new(faas_akt.Params)
+	params := new(faas_akt.LambdaParams)
 	numberBytes, err := json.Marshal(AddParams{A: 2, B: 3})
 	if err != nil {
 		logger.Error(err)
@@ -60,7 +60,7 @@ func TestLambdaActor(t *testing.T) {
 		t.Error("Failed to message actor", err)
 	}
 	switch response.(type) {
-	case *faas_akt.Result:
+	case *faas_akt.LambdaResult:
 		descriptor := response.ProtoReflect().Descriptor().Fields().ByName("JsonResultString")
 		jsonResult := response.ProtoReflect().Get(descriptor).String()
 		structResult := new(AddResult)

@@ -26,7 +26,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LambdaClient interface {
-	Invoke(ctx context.Context, in *Params, opts ...grpc.CallOption) (*Result, error)
+	Invoke(ctx context.Context, in *LambdaParams, opts ...grpc.CallOption) (*LambdaResult, error)
 }
 
 type lambdaClient struct {
@@ -37,9 +37,9 @@ func NewLambdaClient(cc grpc.ClientConnInterface) LambdaClient {
 	return &lambdaClient{cc}
 }
 
-func (c *lambdaClient) Invoke(ctx context.Context, in *Params, opts ...grpc.CallOption) (*Result, error) {
+func (c *lambdaClient) Invoke(ctx context.Context, in *LambdaParams, opts ...grpc.CallOption) (*LambdaResult, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Result)
+	out := new(LambdaResult)
 	err := c.cc.Invoke(ctx, Lambda_Invoke_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -51,7 +51,7 @@ func (c *lambdaClient) Invoke(ctx context.Context, in *Params, opts ...grpc.Call
 // All implementations must embed UnimplementedLambdaServer
 // for forward compatibility.
 type LambdaServer interface {
-	Invoke(context.Context, *Params) (*Result, error)
+	Invoke(context.Context, *LambdaParams) (*LambdaResult, error)
 	mustEmbedUnimplementedLambdaServer()
 }
 
@@ -62,7 +62,7 @@ type LambdaServer interface {
 // pointer dereference when methods are called.
 type UnimplementedLambdaServer struct{}
 
-func (UnimplementedLambdaServer) Invoke(context.Context, *Params) (*Result, error) {
+func (UnimplementedLambdaServer) Invoke(context.Context, *LambdaParams) (*LambdaResult, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Invoke not implemented")
 }
 func (UnimplementedLambdaServer) mustEmbedUnimplementedLambdaServer() {}
@@ -87,7 +87,7 @@ func RegisterLambdaServer(s grpc.ServiceRegistrar, srv LambdaServer) {
 }
 
 func _Lambda_Invoke_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Params)
+	in := new(LambdaParams)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -99,7 +99,7 @@ func _Lambda_Invoke_Handler(srv interface{}, ctx context.Context, dec func(inter
 		FullMethod: Lambda_Invoke_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LambdaServer).Invoke(ctx, req.(*Params))
+		return srv.(LambdaServer).Invoke(ctx, req.(*LambdaParams))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -114,6 +114,108 @@ var Lambda_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Invoke",
 			Handler:    _Lambda_Invoke_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "faas.proto",
+}
+
+const (
+	Inngest_Trigger_FullMethodName = "/faas_akt.Inngest/Trigger"
+)
+
+// InngestClient is the client API for Inngest service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type InngestClient interface {
+	Trigger(ctx context.Context, in *InngestEvent, opts ...grpc.CallOption) (*InvokedSuccessfully, error)
+}
+
+type inngestClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewInngestClient(cc grpc.ClientConnInterface) InngestClient {
+	return &inngestClient{cc}
+}
+
+func (c *inngestClient) Trigger(ctx context.Context, in *InngestEvent, opts ...grpc.CallOption) (*InvokedSuccessfully, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(InvokedSuccessfully)
+	err := c.cc.Invoke(ctx, Inngest_Trigger_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// InngestServer is the server API for Inngest service.
+// All implementations must embed UnimplementedInngestServer
+// for forward compatibility.
+type InngestServer interface {
+	Trigger(context.Context, *InngestEvent) (*InvokedSuccessfully, error)
+	mustEmbedUnimplementedInngestServer()
+}
+
+// UnimplementedInngestServer must be embedded to have
+// forward compatible implementations.
+//
+// NOTE: this should be embedded by value instead of pointer to avoid a nil
+// pointer dereference when methods are called.
+type UnimplementedInngestServer struct{}
+
+func (UnimplementedInngestServer) Trigger(context.Context, *InngestEvent) (*InvokedSuccessfully, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Trigger not implemented")
+}
+func (UnimplementedInngestServer) mustEmbedUnimplementedInngestServer() {}
+func (UnimplementedInngestServer) testEmbeddedByValue()                 {}
+
+// UnsafeInngestServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to InngestServer will
+// result in compilation errors.
+type UnsafeInngestServer interface {
+	mustEmbedUnimplementedInngestServer()
+}
+
+func RegisterInngestServer(s grpc.ServiceRegistrar, srv InngestServer) {
+	// If the following call pancis, it indicates UnimplementedInngestServer was
+	// embedded by pointer and is nil.  This will cause panics if an
+	// unimplemented method is ever invoked, so we test this at initialization
+	// time to prevent it from happening at runtime later due to I/O.
+	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
+		t.testEmbeddedByValue()
+	}
+	s.RegisterService(&Inngest_ServiceDesc, srv)
+}
+
+func _Inngest_Trigger_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InngestEvent)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InngestServer).Trigger(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Inngest_Trigger_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InngestServer).Trigger(ctx, req.(*InngestEvent))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// Inngest_ServiceDesc is the grpc.ServiceDesc for Inngest service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var Inngest_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "faas_akt.Inngest",
+	HandlerType: (*InngestServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Trigger",
+			Handler:    _Inngest_Trigger_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

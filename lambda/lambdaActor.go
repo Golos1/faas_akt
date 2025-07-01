@@ -46,7 +46,7 @@ func (actor LambdaActor[T]) Receive(ctx *actor.ReceiveContext) {
 	var args T
 	switch ctx.Message().(type) {
 	case *goaktpb.PostStart:
-	case *faas_akt.Params:
+	case *faas_akt.LambdaParams:
 		parameters := ctx.Message().ProtoReflect().Get(ctx.Message().ProtoReflect().Descriptor().Fields().ByName("JsonParamString")).String()
 		arg_bytes := []byte(parameters)
 		err := json.Unmarshal(arg_bytes, &args)
@@ -75,7 +75,7 @@ func (actor LambdaActor[T]) Receive(ctx *actor.ReceiveContext) {
 
 		} else {
 			ctx.Logger().Info("Function successfully invoked.")
-			reply := new(faas_akt.Result)
+			reply := new(faas_akt.LambdaResult)
 			reply.JsonResultString = string(result.Payload)
 			reply.Logs = *result.LogResult
 			ctx.Logger().Info(reply.JsonResultString)
