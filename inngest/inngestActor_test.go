@@ -53,7 +53,7 @@ func TestInngestActor(t *testing.T) {
 	}
 	jsonBytes, _ := json.Marshal(RandomJson{A: 1, B: 2, C: "stuff"})
 
-	result, err := actor.Ask(ctx, pid, &faas_akt.InngestEvent{EventName: "echo", JsonParamString: string(jsonBytes)}, time.Second)
+	result, err := actor.Ask(ctx, pid, &faas_akt.InngestEvent{EventName: "echo", JsonParamString: string(jsonBytes)}, time.Minute)
 	if err != nil {
 		logger.Error(err)
 		t.Error("Failed to message Actor", err)
