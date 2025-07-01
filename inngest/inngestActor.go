@@ -33,23 +33,24 @@ func (actor *InngestActor[T]) Receive(ctx *actor.ReceiveContext) {
 		ctx.Logger().Info("Received Message.")
 		eventName := ctx.Message().ProtoReflect().Get(ctx.Message().ProtoReflect().Descriptor().Fields().ByName("EventName")).String()
 		payload := ctx.Message().ProtoReflect().Get(ctx.Message().ProtoReflect().Descriptor().Fields().ByName("JsonParamString")).String()
-		ctx.Logger().Info("Parsed Message.")
 		var payloadMap map[string]any
 		err := json.Unmarshal([]byte(payload), &payloadMap)
 		if err != nil {
 			ctx.Logger().Error("Error parsing parameters: ", err)
 			ctx.Unhandled()
 		}
+		ctx.Logger().Info("Parsed Message.")
 		_, err = actor.InngestClient.Send(ctx.Context(), inngestgo.Event{
 			Name: eventName,
 			Data: payloadMap,
 		})
-
+		ctx.Logger().Info("Got OK from inngest.")
 		if err != nil {
 			ctx.Logger().Error("Error Sending event: ", err)
 			ctx.Unhandled()
 		} else {
 			ctx.Response(&faas_akt.InvokedSuccessfully{})
+			ctx.Logger().Info("Invoked Inngest successfully.")
 		}
 	default:
 		ctx.Logger().Error("Wrong Type of message")
